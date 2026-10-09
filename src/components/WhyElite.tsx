@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { Button } from './Button';
+import { getOptimizedImageUrl, getImageSrcSet } from '../utils/imageUrl';
 
 interface WhyEliteProps {
   onOpenConsultation: () => void;
@@ -124,7 +125,11 @@ export const WhyElite: React.FC<WhyEliteProps> = ({ onOpenConsultation }) => {
 
           <div className="lg:col-span-6 relative aspect-[4/3] overflow-hidden bg-[#111111] border border-[#111111]/15 shadow-xl">
             <img
-              src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80"
+              src={getOptimizedImageUrl("https://images.unsplash.com/photo-1497366216548-37526070297c", 800)}
+              srcSet={getImageSrcSet("https://images.unsplash.com/photo-1497366216548-37526070297c")}
+              sizes="(max-width: 768px) 100vw, 600px"
+              loading="lazy"
+              decoding="async"
               alt="Elite Studios Design Experience Lounge"
               className="w-full h-full object-cover"
             />

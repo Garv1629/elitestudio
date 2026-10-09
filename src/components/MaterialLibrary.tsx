@@ -4,6 +4,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { getWhatsAppUrl } from '../data/studioData';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from './Button';
+import { getOptimizedImageUrl, getImageSrcSet } from '../utils/imageUrl';
 
 export const MaterialLibrary: React.FC = () => {
   const [activeMaterialId, setActiveMaterialId] = useState<string>('wood');
@@ -68,12 +69,16 @@ export const MaterialLibrary: React.FC = () => {
             <AnimatePresence mode="wait">
               <motion.img
                 key={activeMaterial.id}
-                src={activeMaterial.imageUrl}
+                src={getOptimizedImageUrl(activeMaterial.imageUrl, 1000)}
+                srcSet={getImageSrcSet(activeMaterial.imageUrl)}
+                sizes="(max-width: 768px) 100vw, 800px"
                 alt={activeMaterial.label}
+                loading="lazy"
+                decoding="async"
                 initial={{ opacity: 0, scale: 1.05 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
               />
             </AnimatePresence>

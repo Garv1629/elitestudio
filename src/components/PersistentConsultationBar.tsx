@@ -38,7 +38,7 @@ export const PersistentConsultationBar: React.FC<PersistentConsultationBarProps>
       </div>
 
       {/* Mobile Fixed Bottom Sticky Bar */}
-      <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#FAF8EE]/95 backdrop-blur-xl border-t border-[#111111]/15 p-3 flex items-center gap-2">
+      <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#FAF8EE]/98 backdrop-blur-sm border-t border-[#111111]/15 p-3 flex items-center gap-2">
         <Button
           variant="glass"
           size="sm"

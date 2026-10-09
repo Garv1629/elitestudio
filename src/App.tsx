@@ -19,9 +19,12 @@ import { ProjectEstimator } from './components/ProjectEstimator';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { StudioLocation } from './components/StudioLocation';
 import { ConversionSection } from './components/ConversionSection';
-import { ConsultationFunnel } from './components/ConsultationFunnel';
 import { PersistentConsultationBar } from './components/PersistentConsultationBar';
 import { Footer } from './components/Footer';
+
+const ConsultationFunnel = React.lazy(() =>
+  import('./components/ConsultationFunnel').then(m => ({ default: m.ConsultationFunnel }))
+);
 
 export default function App() {
   const [consultationOpen, setConsultationOpen] = useState(false);
@@ -132,12 +135,16 @@ export default function App() {
       />
 
       {/* Multi-step High-Converting Consultation Booking Modal */}
-      <ConsultationFunnel
-        isOpen={consultationOpen}
-        onClose={() => setConsultationOpen(false)}
-        initialStep={consultationInitialStep}
-        initialContext={consultationContext}
-      />
+      {consultationOpen && (
+        <React.Suspense fallback={null}>
+          <ConsultationFunnel
+            isOpen={consultationOpen}
+            onClose={() => setConsultationOpen(false)}
+            initialStep={consultationInitialStep}
+            initialContext={consultationContext}
+          />
+        </React.Suspense>
+      )}
     </div>
   );
 }

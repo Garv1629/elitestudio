@@ -19,14 +19,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenConsultation, onOpenEstima
   // Measure and update header height for seamless drawer placement
   const updateHeaderHeight = useCallback(() => {
     if (headerRef.current) {
-      setHeaderHeight(headerRef.current.getBoundingClientRect().height);
+      setHeaderHeight(headerRef.current.offsetHeight);
     }
   }, []);
 
   // Track scroll position to update header styling
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 25);
+      const scrolled = window.scrollY > 25;
+      setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -34,20 +35,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenConsultation, onOpenEstima
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Update header height on scroll change, mount, and resize
+  // Update header height on mount and resize
   useEffect(() => {
     updateHeaderHeight();
     const handleResize = () => {
       updateHeaderHeight();
-      // Auto-close mobile drawer when transitioning to desktop viewport
-      if (window.innerWidth >= 1024 && mobileMenuOpen) {
+      if (window.innerWidth >= 1024) {
         setMobileMenuOpen(false);
       }
     };
 
     window.addEventListener('resize', handleResize, { passive: true });
     return () => window.removeEventListener('resize', handleResize);
-  }, [isScrolled, mobileMenuOpen, updateHeaderHeight]);
+  }, [updateHeaderHeight]);
 
   // Lock body scroll and prevent layout shift when mobile drawer is open
   useEffect(() => {

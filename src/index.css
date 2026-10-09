@@ -320,6 +320,44 @@ body {
   }
 }
 
+/* -------------------------------------------------------------------------
+   Mobile Glassmorphism & GPU Performance Profile (< 768px)
+   Reduces expensive multi-layer 20px+ blur passes to lightweight 6-8px blurs
+   and translucent solid fallbacks to maintain 60fps scrolling on handhelds
+   ------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .site-header--unscrolled {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    background-color: rgba(17, 17, 17, 0.94);
+  }
+
+  .site-header--scrolled {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    background-color: rgba(242, 238, 216, 0.97);
+  }
+
+  .glass-surface {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.78);
+  }
+
+  .glass-badge,
+  .glass-pill {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.88);
+  }
+
+  .glass-panel {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    background: rgba(250, 248, 238, 0.95);
+  }
+}
+
 /* Hide scrollbar for clean horizontal scrolls */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

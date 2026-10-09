@@ -14,12 +14,16 @@ export const CustomCursor: React.FC = () => {
   const cursorY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+    if (typeof window === 'undefined' || window.matchMedia('(pointer: coarse)').matches) return;
 
+    let hasShown = false;
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+      if (!hasShown) {
+        hasShown = true;
+        setIsVisible(true);
+      }
     };
 
     const handleMouseLeave = () => setIsVisible(false);
@@ -41,16 +45,16 @@ export const CustomCursor: React.FC = () => {
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
-    window.addEventListener('mouseover', handleElementHover);
+    window.addEventListener('mouseover', handleElementHover, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('mouseover', handleElementHover);
     };
-  }, [isVisible, mouseX, mouseY]);
+  }, [mouseX, mouseY]);
 
   if (!isVisible) return null;
 

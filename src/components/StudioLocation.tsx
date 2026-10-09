@@ -2,6 +2,7 @@ import React from 'react';
 import { STUDIO_INFO } from '../data/studioData';
 import { MapPin, Navigation, Clock, Coffee } from 'lucide-react';
 import { Button } from './Button';
+import { getOptimizedImageUrl, getImageSrcSet } from '../utils/imageUrl';
 
 interface StudioLocationProps {
   onOpenConsultation: () => void;
@@ -112,7 +113,11 @@ export const StudioLocation: React.FC<StudioLocationProps> = ({ onOpenConsultati
 
               <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#111111] border border-[#111111]/10">
                 <img
-                  src="https://images.unsplash.com/photo-1541888946425-d0fbb1861593?auto=format&fit=crop&w=1200&q=80"
+                  src={getOptimizedImageUrl("https://images.unsplash.com/photo-1541888946425-d0fbb1861593", 800)}
+                  srcSet={getImageSrcSet("https://images.unsplash.com/photo-1541888946425-d0fbb1861593")}
+                  sizes="(max-width: 768px) 100vw, 700px"
+                  loading="lazy"
+                  decoding="async"
                   alt="Gaur World SmartStreet Mall Greater Noida West"
                   className="w-full h-full object-cover opacity-75"
                 />

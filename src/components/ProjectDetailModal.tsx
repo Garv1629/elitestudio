@@ -3,6 +3,7 @@ import { Project } from '../data/projectsData';
 import { X } from 'lucide-react';
 import { getWhatsAppUrl } from '../data/studioData';
 import { Button } from './Button';
+import { getOptimizedImageUrl, getImageSrcSet } from '../utils/imageUrl';
 
 interface ProjectDetailModalProps {
   project: Project | null;
@@ -90,7 +91,11 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
           {/* Hero Full Banner */}
           <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#111111] border border-[#111111]/15 shadow-xl">
             <img
-              src={project.heroImage}
+              src={getOptimizedImageUrl(project.heroImage, 1200)}
+              srcSet={getImageSrcSet(project.heroImage)}
+              sizes="(max-width: 768px) 100vw, 1000px"
+              loading="lazy"
+              decoding="async"
               alt={project.title}
               className="w-full h-full object-cover"
             />
@@ -199,7 +204,11 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#F2EED8] border border-[#111111]/15 p-6 lg:p-8 rounded-3xl shadow-sm">
               <div className="lg:col-span-8 overflow-hidden aspect-[16/10] bg-[#111111] rounded-2xl">
                 <img
-                  src={currentRoom.imageUrl}
+                  src={getOptimizedImageUrl(currentRoom.imageUrl, 1000)}
+                  srcSet={getImageSrcSet(currentRoom.imageUrl)}
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  loading="lazy"
+                  decoding="async"
                   alt={currentRoom.name}
                   className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 />

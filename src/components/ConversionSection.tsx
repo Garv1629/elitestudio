@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpRight, MessageCircle } from 'lucide-react';
 import { STUDIO_INFO, getWhatsAppUrl } from '../data/studioData';
 import { Button } from './Button';
+import { getOptimizedImageUrl, getImageSrcSet } from '../utils/imageUrl';
 
 interface ConversionSectionProps {
   onOpenConsultation: () => void;
@@ -13,7 +14,11 @@ export const ConversionSection: React.FC<ConversionSectionProps> = ({ onOpenCons
       {/* Background Architectural Layer */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-15">
         <img
-          src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2000&q=80"
+          src={getOptimizedImageUrl("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c", 1000)}
+          srcSet={getImageSrcSet("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c")}
+          sizes="(max-width: 768px) 100vw, 1200px"
+          loading="lazy"
+          decoding="async"
           alt="Elite Studios luxury architectural living"
           className="w-full h-full object-cover scale-105"
         />

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SERVICES_DATA } from '../data/servicesData';
 import { ArrowUpRight } from 'lucide-react';
 import { Button } from './Button';
+import { getOptimizedImageUrl, getImageSrcSet } from '../utils/imageUrl';
 
 interface ServicesShowcaseProps {
   onOpenConsultationWithService: (serviceTitle: string) => void;
@@ -83,8 +84,12 @@ export const ServicesShowcase: React.FC<ServicesShowcaseProps> = ({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               <div className="lg:col-span-7 relative aspect-[16/10] overflow-hidden bg-[#111111] border border-[#111111]/15 shadow-xl group">
                 <img
-                  src={turnkey.imageUrl}
+                  src={getOptimizedImageUrl(turnkey.imageUrl, 1000)}
+                  srcSet={getImageSrcSet(turnkey.imageUrl)}
+                  sizes="(max-width: 768px) 100vw, 800px"
                   alt={turnkey.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111111]/70 via-transparent to-transparent" />
@@ -180,8 +185,12 @@ export const ServicesShowcase: React.FC<ServicesShowcaseProps> = ({
 
               <div className="lg:col-span-7 relative aspect-[16/10] overflow-hidden bg-[#111111] border border-[#111111]/15 shadow-xl group order-1 lg:order-2">
                 <img
-                  src={kitchen.imageUrl}
+                  src={getOptimizedImageUrl(kitchen.imageUrl, 1000)}
+                  srcSet={getImageSrcSet(kitchen.imageUrl)}
+                  sizes="(max-width: 768px) 100vw, 800px"
                   alt={kitchen.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111111]/70 via-transparent to-transparent" />
@@ -208,8 +217,12 @@ export const ServicesShowcase: React.FC<ServicesShowcaseProps> = ({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               <div className="lg:col-span-6 relative aspect-[4/3] overflow-hidden bg-[#111111] border border-[#111111]/15 shadow-xl group">
                 <img
-                  src={furniture.imageUrl}
+                  src={getOptimizedImageUrl(furniture.imageUrl, 1000)}
+                  srcSet={getImageSrcSet(furniture.imageUrl)}
+                  sizes="(max-width: 768px) 100vw, 800px"
                   alt={furniture.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111111]/70 via-transparent to-transparent" />
@@ -305,8 +318,12 @@ export const ServicesShowcase: React.FC<ServicesShowcaseProps> = ({
 
               <div className="lg:col-span-7 relative aspect-[16/11] overflow-hidden bg-[#111111] border border-[#111111]/15 shadow-xl group">
                 <img
-                  src={wardrobes.imageUrl}
+                  src={getOptimizedImageUrl(wardrobes.imageUrl, 1000)}
+                  srcSet={getImageSrcSet(wardrobes.imageUrl)}
+                  sizes="(max-width: 768px) 100vw, 800px"
                   alt={wardrobes.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111111]/70 via-transparent to-transparent" />
@@ -333,8 +350,12 @@ export const ServicesShowcase: React.FC<ServicesShowcaseProps> = ({
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               <div className="lg:col-span-7 relative aspect-[16/10] overflow-hidden bg-[#111111] border border-[#111111]/15 shadow-xl group">
                 <img
-                  src={decor.imageUrl}
+                  src={getOptimizedImageUrl(decor.imageUrl, 1000)}
+                  srcSet={getImageSrcSet(decor.imageUrl)}
+                  sizes="(max-width: 768px) 100vw, 800px"
                   alt={decor.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111111]/70 via-transparent to-transparent" />

@@ -4,6 +4,7 @@ import { Eye, ArrowUpRight } from 'lucide-react';
 import { ProjectDetailModal } from './ProjectDetailModal';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from './Button';
+import { getOptimizedImageUrl, getImageSrcSet } from '../utils/imageUrl';
 
 interface SelectedProjectsProps {
   onOpenConsultationWithProject: (projectTitle: string) => void;
@@ -90,7 +91,7 @@ export const SelectedProjects: React.FC<SelectedProjectsProps> = ({
         {/* Signature Pinned Architectural Showcase Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* Left Sticky Column: Project Selector & Editorial Meta */}
-          <div className="lg:col-span-5 space-y-6 sticky top-28">
+          <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-28">
             <div className="space-y-3">
               <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#111111]/60 block">
                 Select Residence
@@ -187,12 +188,16 @@ export const SelectedProjects: React.FC<SelectedProjectsProps> = ({
               <AnimatePresence mode="wait">
                 <motion.img
                   key={`${currentProject.id}-${activeRoomIndex}`}
-                  src={currentRoom?.imageUrl || currentProject.heroImage}
+                  src={getOptimizedImageUrl(currentRoom?.imageUrl || currentProject.heroImage, 1000)}
+                  srcSet={getImageSrcSet(currentRoom?.imageUrl || currentProject.heroImage)}
+                  sizes="(max-width: 768px) 100vw, 800px"
                   alt={currentRoom?.name || currentProject.title}
+                  loading="lazy"
+                  decoding="async"
                   initial={{ opacity: 0, scale: 1.04 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </AnimatePresence>

@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowUpRight, ArrowDown } from 'lucide-react';
 import { Button } from './Button';
+import { getOptimizedImageUrl, getImageSrcSet } from '../utils/imageUrl';
 
 interface HeroProps {
   onOpenConsultation: () => void;
@@ -10,13 +11,23 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onOpenConsultation, onExploreWork }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => {
+      setIsMobile(window.innerWidth < 768 || window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    };
+    check();
+    window.addEventListener('resize', check, { passive: true });
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  // Scroll scrub transformations
+  // Scroll scrub transformations (active on desktop, relaxed on mobile)
   const imageScale = useTransform(scrollYProgress, [0, 1], [1.14, 1.0]);
   const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
   const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '22%']);
@@ -28,35 +39,42 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConsultation, onExploreWork })
       ref={containerRef}
       className="relative min-h-screen flex flex-col justify-between pt-36 sm:pt-44 lg:pt-48 pb-16 px-6 lg:px-12 overflow-hidden bg-[#111111]"
     >
-      {/* Cinematic Background Layer with Scroll-scrubbed scale & pan */}
+      {/* Cinematic Background Layer with Scroll-scrubbed scale & pan on desktop */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <motion.div
           style={{
-            scale: imageScale,
-            y: imageY,
+            scale: isMobile ? 1 : imageScale,
+            y: isMobile ? '0%' : imageY,
           }}
           className="w-full h-full relative"
         >
           <img
-            src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2400&q=90"
+            src={getOptimizedImageUrl("https://images.unsplash.com/photo-1600210492486-724fe5c67fb0", 1920, 85)}
+            srcSet={getImageSrcSet("https://images.unsplash.com/photo-1600210492486-724fe5c67fb0")}
+            sizes="100vw"
             alt="Elite Studios luxury interior architecture in Greater Noida West"
             className="w-full h-full object-cover object-center brightness-[0.88] contrast-[1.04]"
             loading="eager"
+            fetchPriority="high"
             decoding="async"
           />
           {/* Architectural Vignette */}
           <motion.div
-            style={{ opacity: overlayOpacity }}
+            style={{ opacity: isMobile ? 0.45 : overlayOpacity }}
             className="absolute inset-0 bg-gradient-to-t from-[#111111] via-[#111111]/50 to-[#111111]/30"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#111111]/60 via-transparent to-[#111111]/40" />
-          <div className="absolute inset-0 bg-grain pointer-events-none opacity-40" />
         </motion.div>
+        {/* Grain layer placed outside transform to prevent re-rasterization */}
+        <div className="absolute inset-0 bg-grain pointer-events-none opacity-40" />
       </div>
 
       {/* Center Cinematic Editorial Content */}
       <motion.div
-        style={{ y: contentY, opacity: contentOpacity }}
+        style={{
+          y: isMobile ? '0%' : contentY,
+          opacity: isMobile ? 1 : contentOpacity
+        }}
         className="relative z-10 max-w-7xl mx-auto w-full my-auto py-12 md:py-24"
       >
         <div className="max-w-5xl space-y-8">

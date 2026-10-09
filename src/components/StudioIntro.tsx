@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import { STUDIO_INFO } from '../data/studioData';
 import { Button } from './Button';
+import { getOptimizedImageUrl, getImageSrcSet } from '../utils/imageUrl';
 
 interface StudioIntroProps {
   onOpenConsultation: () => void;
@@ -10,13 +11,23 @@ interface StudioIntroProps {
 
 export const StudioIntro: React.FC<StudioIntroProps> = ({ onOpenConsultation }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => {
+      setIsMobile(window.innerWidth < 768 || window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    };
+    check();
+    window.addEventListener('resize', check, { passive: true });
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end start'],
   });
 
-  // Expanding aperture / frame transformation
+  // Expanding aperture / frame transformation (desktop only to prevent mobile clip-path rasterization)
   const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.92, 1.05, 1.0]);
   const imageClip = useTransform(
     scrollYProgress,
@@ -110,13 +121,17 @@ export const StudioIntro: React.FC<StudioIntroProps> = ({ onOpenConsultation }) 
         <div className="relative aspect-[16/9] lg:aspect-[21/9] w-full overflow-hidden bg-[#111111] border border-[#111111]/10 shadow-lg">
           <motion.div
             style={{
-              scale: imageScale,
-              clipPath: imageClip,
+              scale: isMobile ? 1 : imageScale,
+              clipPath: isMobile ? undefined : imageClip,
             }}
             className="w-full h-full relative"
           >
             <img
-              src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=2400&q=85"
+              src={getOptimizedImageUrl("https://images.unsplash.com/photo-1618221195710-dd6b41faaea6", 1200)}
+              srcSet={getImageSrcSet("https://images.unsplash.com/photo-1618221195710-dd6b41faaea6")}
+              sizes="(max-width: 768px) 100vw, 1200px"
+              loading="lazy"
+              decoding="async"
               alt="Elite Studios architectural craftsmanship"
               className="w-full h-full object-cover"
             />
