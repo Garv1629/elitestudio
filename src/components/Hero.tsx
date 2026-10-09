@@ -41,6 +41,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConsultation, onExploreWork })
             src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2400&q=90"
             alt="Elite Studios luxury interior architecture in Greater Noida West"
             className="w-full h-full object-cover object-center brightness-[0.88] contrast-[1.04]"
+            loading="eager"
+            decoding="async"
           />
           {/* Architectural Vignette */}
           <motion.div

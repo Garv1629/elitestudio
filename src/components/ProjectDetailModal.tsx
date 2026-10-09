@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Project } from '../data/projectsData';
 import { X } from 'lucide-react';
 import { getWhatsAppUrl } from '../data/studioData';
@@ -16,6 +16,21 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
   onOpenConsultationWithProject
 }) => {
   const [selectedRoomIdx, setSelectedRoomIdx] = useState(0);
+
+  useEffect(() => {
+    if (project) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [project, onClose]);
 
   if (!project) return null;
 

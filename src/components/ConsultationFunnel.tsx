@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, ArrowRight, ArrowLeft, CheckCircle2, MessageCircle } from 'lucide-react';
 import { getWhatsAppUrl } from '../data/studioData';
 import { Button } from './Button';
@@ -29,6 +29,21 @@ export const ConsultationFunnel: React.FC<ConsultationFunnelProps> = ({
     notes: initialContext || ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

@@ -55,6 +55,12 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media (max-width: 480px) {
+  html {
+    font-size: 15.5px;
+  }
+}
+
 @media (min-width: 1280px) {
   html {
     font-size: 18px;

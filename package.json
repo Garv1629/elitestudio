@@ -7,8 +7,8 @@
     "dev": "vite --host 0.0.0.0",
     "build": "npx --package vite vite build",
     "preview": "vite preview --port=8080 --host=0.0.0.0",
-    "commit": "git commit -m \"Initial commit: Elite Studios website with responsive navbar\"",
-    "deploy": "node git_push.cjs"
+    "lint": "npx --package typescript tsc --noEmit",
+    "push-all": "node git_push.cjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
